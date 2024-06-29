@@ -1,3 +1,9 @@
+this project involves dealing with forking(copying) into somebody else codebase without changing the original process
+the process of forking includes:
+1. go to github and select the repo of choice that you want to fork
+2. at the top right select the fork button 
+3. rename your repo into a name of your choice
+4. the go to the command line interface and git clone into the repository
 <center> <h1>HBNB - The Console</h1> </center>
 
 This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
