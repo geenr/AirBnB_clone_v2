@@ -112,20 +112,43 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    def do_create(self, input_string):
+        """
+        Creates a new instance of a specified class with optional attributes.
+        """
+        try:
+            target_class_name = input_string.split(" ")[0]
+            if len(target_class_name) == 0:
+                print("** class name missing **")
+                return
+            if target_class_name and target_class_name not in self.valid_classes:
+                print("** class doesn't exist **")
+                return
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+            instance_attributes = {}
+            input_parts = input_string.split(" ")
+            for part_index in range(1, len(input_parts)):
+                attr_name = input_parts[part_index].split("=")[0]
+                attr_value = input_parts[part_index].split("=")[1]
+                if attr_value.startswith('"'):
+                    attr_value = attr_value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        attr_value = eval(attr_value)
+                    except (SyntaxError, NameError):
+                        continue
+                    instance_attributes[attr_name] = attr_value
 
+            if instance_attributes == {}:
+                created_instance = eval(target_class_name)()
+            else:
+                created_instance = eval(target_class_name)(**instance_attributes)
+            storage.new(created_instance)
+            print(created_instance.id)
+            storage.save()
+        except ValueError:
+            print(ValueError)
+            return
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
